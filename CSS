@@ -19,11 +19,16 @@ body {
 	box-sizing: border-box;
 }
 
+*{
+	box-sizing: border-box;
+}
+
 /*serves as main content*/
 main {
 	flex: 1;
 	padding: 32px;
 	width: 100%;
+	box-sizing:border-box;
 }
 
 /*to be used in body as class using php if else 
