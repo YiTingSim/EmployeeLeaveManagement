@@ -1,1 +1,10 @@
-
+:root{
+	--bgcolor: #F8FAFC;
+	--navcolor: #1E293B;
+	--maincolor: #2563EB; /*elements like button, sidebar, headings and important actions*/
+	--success: #10B981;
+	--pending: #F59E0B;
+	--alert: #DC2626;
+	--card: #FFFFFF;
+	--textcolor: #0F172A;
+}
