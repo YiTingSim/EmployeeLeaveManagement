@@ -19,7 +19,8 @@ body {
 
 /*serves as main content*/
 main{
-	
+	flex: 1;
+	padding: 24px;
 }
 
 /*to be used in body as class using php if else*/
