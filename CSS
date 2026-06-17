@@ -26,6 +26,7 @@ main{
 /*to be used in body as class using php if else*/
 .manager-layout{
 	display: flex;
+	flex-direction: row;
 }
 
 .emp-layout{
