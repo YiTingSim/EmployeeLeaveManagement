@@ -8,3 +8,26 @@
 	--card: #FFFFFF;
 	--textcolor: #0F172A;
 }
+
+body {
+	font-family: 'Segoe UI';
+    background-color: var(--bgcolor);
+    color: var(--textcolor);
+    display: flex;
+    min-height: 100vh;
+}
+
+/*serves as main content*/
+main{
+	
+}
+
+/*to be used in body as class using php if else*/
+.manager-layout{
+	display: flex;
+}
+
+.emp-layout{
+	display: flex;
+	flex-direction: column;
+}
