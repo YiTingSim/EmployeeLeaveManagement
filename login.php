@@ -66,7 +66,7 @@ $conn->close();
 <body>
 	<!--Plays in line to avoid fullscreen mode-->
 	<video autoplay loop playsinline class="video-bg">
-		<source src="https://media.istockphoto.com/id/2127578600/video/soft-abstract-background-infinite-gradient-lights-loop.mp4?s=mp4-640x640-is&k=20&c=jO60GIyuSgEhNJ5wQt2vlMaVgOfj6du3V7YMS1HalJw=">
+		<source src="login-bg.mp4">
 	</video>
 
     <div class="login-card">
