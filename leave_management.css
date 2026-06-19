@@ -1,0 +1,337 @@
+:root {
+            --bg-deep: #090a0f;
+            --bg-surface: #12141c;
+            --bg-card: #1a1d29;
+            --accent-primary: #6366f1; /* Indigo Neon */
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: rgba(255, 255, 255, 0.05);
+            
+            --status-pending: #f59e0b;
+            --status-approved: #10b981;
+            --status-rejected: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-image: url('background-image.jpg');
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+		
+		
+		.manager-layout{
+			display:flex;
+		}
+
+		.employee-layout{
+			display: flex;
+			flex-direction: column;
+		}
+		
+
+		
+		/*Top nav*/
+		.top-navbar {
+			width: 100%;
+			background: var(--bg-surface);
+			border-bottom: 1px solid var(--border-color);
+			padding: 1rem;
+		}
+
+		.nav-container {
+			max-width: 1400px;
+			margin: 0 auto;
+			padding: 1 2rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		
+		.top-nav-links{
+			display: flex;
+			align-items: center;
+			list-style: none;
+			gap: 1rem;
+        }
+		
+
+		.top-nav-links a {
+			color: var(--text-muted);
+			text-decoration: none;
+			padding: 0.75rem 1rem;
+			border-radius: 8px;
+			transition: all 0.3s ease;
+		}
+
+		.top-nav-links a:hover {
+			color: white;
+			background: var(--bg-card);
+		}
+
+		.logout-link {
+			color: var(--status-rejected) !important;
+		}
+
+		.logout-link:hover {
+			background: rgba(239, 68, 68, 0.15);
+		}
+
+
+        /* Sidebar Glassmorphism */
+        aside {
+            width: 280px;
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+		
+		/* Toggle button styling */
+		.toggle-sidebar-btn {
+			background: transparent;
+			border: none;
+			color: var(--text-muted);
+			cursor: pointer;
+			font-size: 1.1rem;
+			padding: 5px;
+			transition: color 0.2s;
+		}
+		.toggle-sidebar-btn:hover {
+			color: var(--accent-primary);
+		}
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+
+        .brand i {
+            color: var(--accent-primary);
+            text-shadow: 0 0 12px var(--accent-primary);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 0.8rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover, .nav-links li.active a {
+            color: #fff;
+            background: var(--bg-card);
+            box-shadow: inset 4px 0 0 var(--accent-primary);
+        }
+
+        /* Main Workspace */
+        main {
+            width: 100%;
+			max-width: 1400px;
+			margin: 0 auto;
+			padding: 2rem;
+		}
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+
+        /* Dashboard Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Reusable Card Styling */
+        .neon-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neon-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Immersive Form Design */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        textarea.form-control {
+            resize: none;
+            height: 100px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--accent-primary);
+            color: #fff;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .btn-submit:hover {
+            background: #5254de;
+            transform: translateY(-2px);
+        }
+
+        /* History Table Styling */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge.pending { background: rgba(245, 158, 11, 0.15); color: var(--status-pending); }
+        .badge.approved { background: rgba(16, 185, 129, 0.15); color: var(--status-approved); }
+        .badge.rejected { background: rgba(239, 68, 68, 0.15); color: var(--status-rejected); }
+
+        /* Alerts */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            animation: fadeIn 0.5s ease;
+        }
+        .alert.success { background: rgba(16, 185, 129, 0.15); color: var(--status-approved); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .alert.error { background: rgba(239, 68, 68, 0.15); color: var(--status-rejected); border: 1px solid rgba(239, 68, 68, 0.3); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
