@@ -22,6 +22,7 @@
 
         body {
             background-image: url('bg.jpg');
+			background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
             overflow-x: hidden;
