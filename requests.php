@@ -60,10 +60,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
         <div class="brand"><i class="fa-solid fa-layer-group"></i> <span>DayAway</span>
 		</div>
         <ul class="nav-links">
-            <li class="active"><a href="index.php"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+            <li><a href="index.php"><i class="fa-solid fa-house"></i> Dashboard</a></li>
             
             <?php if ($_SESSION['user_role'] === 'Manager'): ?>
-                <li><a href="requests.php"><i class="fa-solid fa-calendar-check"></i> Leave Requests</a></li>
+                <li class="active"><a href="requests.php"><i class="fa-solid fa-calendar-check"></i> Leave Requests</a></li>
                 <li><a href="employees.php"><i class="fa-solid fa-users"></i> Employees</a></li>
                 <li><a href="analytics.php"><i class="fa-solid fa-chart-pie"></i> Analytics</a></li>
             <?php endif; ?>
