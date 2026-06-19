@@ -55,7 +55,8 @@ $conn->close();
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="leave_management.css">
     <style>
-        body { display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background-color: #0b0f19; }
+        body { display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;}
+		.video-bg { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index:-100;}
         .login-card { width: 100%; max-width: 420px; padding: 2.5rem; background: #111827; border: 1px solid #1f2937; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
         .login-header { text-align: center; margin-bottom: 2rem; }
         .login-header h1 { font-size: 1.8rem; font-weight: 700; color: #fff; letter-spacing: 2px; margin: 0; }
@@ -63,6 +64,11 @@ $conn->close();
     </style>
 </head>
 <body>
+	<!--Plays in line to avoid fullscreen mode-->
+	<video autoplay loop playsinline class="video-bg">
+		<source src="https://media.istockphoto.com/id/2127578600/video/soft-abstract-background-infinite-gradient-lights-loop.mp4?s=mp4-640x640-is&k=20&c=jO60GIyuSgEhNJ5wQt2vlMaVgOfj6du3V7YMS1HalJw=">
+	</video>
+
     <div class="login-card">
         <div class="login-header">
             <h1>DayAway SYSTEM</h1>
