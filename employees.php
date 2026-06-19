@@ -1,0 +1,159 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'Manager') {
+    header("Location: index.php");
+    exit();
+}
+
+$conn = new mysqli("localhost", "root", "", "leave_management");
+if ($conn->connect_error) { die("Database link failure."); }
+
+$message = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
+    $emp_id = htmlspecialchars(trim($_POST['emp_id']));
+    $name = htmlspecialchars($_POST['name']);
+    $dept = htmlspecialchars($_POST['department']);
+    $leaves = intval($_POST['leaves']);
+    $role = htmlspecialchars($_POST['role']);
+    $pass = trim($_POST['password']);
+
+    $stmt = $conn->prepare("INSERT INTO employees (emp_id, name, department, allocated_leaves, role, password) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssiss", $emp_id, $name, $dept, $leaves, $role, $pass);
+    
+    if ($stmt->execute()) {
+        $message = "<div class='alert success'>Profile creation confirmed! Identity code: $emp_id</div>";
+    } else {
+        $message = "<div class='alert error'>Processing conflict: Entry identifier signature collision.</div>";
+    }
+    $stmt->close();
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DayAway | Personnel Provisioning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="leave_management.css">
+</head>
+<body class="<?php echo ($_SESSION['user_role'] === 'Manager') ? 'manager-layout' : 'employee-layout'; ?>">
+<?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Manager'): ?>
+    <aside id="sidebar">
+        <div class="brand"><i class="fa-solid fa-layer-group"></i> <span>DayAway</span>
+		</div>
+        <ul class="nav-links">
+            <li class="active"><a href="index.php"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+            
+            <?php if ($_SESSION['user_role'] === 'Manager'): ?>
+                <li><a href="requests.php"><i class="fa-solid fa-calendar-check"></i> Leave Requests</a></li>
+                <li><a href="employees.php"><i class="fa-solid fa-users"></i> Employees</a></li>
+                <li><a href="analytics.php"><i class="fa-solid fa-chart-pie"></i> Analytics</a></li>
+            <?php endif; ?>
+            
+            <li style="margin-top: auto;"><a href="logout.php" style="color: #ef4444;"><i class="fa-solid fa-power-off"></i> Logout</a></li>
+        </ul>
+    </aside>
+	
+	<?php else: ?>
+    <nav class="top-navbar">
+        <div class="nav-container">
+            <div class="brand">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>DayAway</span>
+            </div>
+            <div class="top-nav-links">
+                <a href="index.php"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <a href="logout.php" class="logout-link"><i class="fa-solid fa-power-off"></i> Exit</a>
+			</div>
+		</div>
+    </nav>
+	
+	
+	
+<?php endif; ?>
+
+
+    <main>
+        <header>
+            <div>
+                <h1>Workspace Provisioning Registry</h1>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Register operational profile nodes</p>
+            </div>
+        </header>
+
+        <?php echo $message; ?>
+
+        <div class="dashboard-grid">
+            <section class="neon-card">
+                <div class="card-title"><i class="fa-solid fa-user-plus" style="color: var(--accent-primary);"></i> Profile Initialization Form</div>
+                <form method="POST" action="employees.php">
+                    <div class="form-group">
+                        <label>Unique ID Code</label>
+                        <input type="text" name="emp_id" class="form-control" placeholder="e.g., EMP-1094" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="Jane Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Operational Domain / Department</label>
+                        <input type="text" name="department" class="form-control" placeholder="Development" required>
+                    </div>
+                    <div class="form-group">
+                        <label>System Account Role Clearance</label>
+                        <select name="role" class="form-control" required>
+                            <option value="Employee">Employee Profile (Limited Clearance)</option>
+                            <option value="Manager">Manager Profile (Authoritative Clearance)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Default Access Password</label>
+                        <input type="text" name="password" class="form-control" value="password123" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Leave Allocation Quota (Days)</label>
+                        <input type="number" name="leaves" class="form-control" value="22" required>
+                    </div>
+                    <button type="submit" name="add_employee" class="btn-submit">Register Profile</button>
+                </form>
+            </section>
+
+            <section class="neon-card">
+                <div class="card-title"><i class="fa-solid fa-address-book" style="color: var(--accent-primary);"></i> System Manifest Logs</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Identity</th>
+                                <th>Name</th>
+                                <th>Domain</th>
+                                <th>Clearance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = "SELECT emp_id, name, department, role FROM employees ORDER BY id DESC";
+                            $result = $conn->query($sql);
+                            if ($result && $result->num_rows > 0) {
+                                while($row = $result->fetch_assoc()) {
+                                    echo "<tr>";
+                                    echo "<td><code>" . htmlspecialchars($row['emp_id']) . "</code></td>";
+                                    echo "<td>" . htmlspecialchars($row['name']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($row['department']) . "</td>";
+                                    echo "<td><span class='badge " . strtolower($row['role']) . "'>" . htmlspecialchars($row['role']) . "</span></td>";
+                                    echo "</tr>";
+                                }
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
+<?php $conn->close(); ?>
