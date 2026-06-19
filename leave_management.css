@@ -21,7 +21,8 @@
         }
 
         body {
-            background-image: url('bg.jpg');
+            background-image: url('https://images.pexels.com/photos/6985118/pexels-photo-6985118.jpeg');
+			background-size: cover;
 			background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
