@@ -162,6 +162,7 @@ put in the nav container of manager and employees
 .profile-badge{
 	display: flex;
 	align-items: center;
+	justify-content:center;
 	cursor: pointer;
 }
 
@@ -222,5 +223,36 @@ put in the nav container of manager and employees
 /* To make table blend in the card */
 .card-body-flush {
 	padding: 0; /* Use this class if a table is going directly inside the card */
+}
+
+/*Login layout*/
+
+.login-card { 
+	width: 100%; 
+	max-width: 420px; 
+	padding: 2.5rem; 
+	background: var(--bgcolor); 
+	border: 1px solid var(--border-color); 
+	border-radius: 16px; 
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
+}
+
+.login-header { 
+	text-align: center; 
+	margin-bottom: 2rem; 
+}
+
+.login-header h1 { 
+	font-size: 1.8rem; 
+	font-weight: 700; 
+	color: var(--maincolor); 
+	letter-spacing: 2px; 
+	margin: 0; 
+}
+
+.login-header p { 
+	color: var(--textcolor); 
+	font-size: 0.85rem; 
+	margin-top: 0.5rem; 
 }
 
