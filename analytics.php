@@ -79,28 +79,46 @@ $rejected_count = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHE
             <div class="metric-block" style="border-top: 3px solid var(--status-approved);"><div style="color: var(--text-muted);">Approved Clearance</div><div class="metric-value"><?php echo $approved_count; ?></div></div>
             <div class="metric-block" style="border-top: 3px solid var(--status-rejected);"><div style="color: var(--text-muted);">Rejected Actions</div><div class="metric-value"><?php echo $rejected_count; ?></div></div>
         </div>
+		
+		<div class="analytics-grid">
+            
+            <section class="neon-card">
+                <div class="card-title"><i class="fa-solid fa-chart-pie" style="color: var(--accent-primary);"></i> Status Metrics Allocation</div>
+                <div class="chart-viewport">
+                    <canvas id="leaveStatusChart" 
+                            data-approved="<?php echo (int)$approved_count; ?>" 
+                            data-pending="<?php echo (int)$pending_count; ?>" 
+                            data-rejected="<?php echo (int)$rejected_count; ?>">
+                    </canvas>
+                </div>
+            </section>
 
-        <section class="neon-card">
-            <div class="card-title"><i class="fa-solid fa-chart-bar" style="color: var(--accent-primary);"></i> Category Load Breakdown</div>
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>Category Type</th><th>Recorded Actions Vol</th></tr></thead>
-                    <tbody>
-                        <?php
-                        $dist_res = $conn->query("SELECT leave_type, COUNT(*) as count FROM leave_requests GROUP BY leave_type");
-                        if ($dist_res && $dist_res->num_rows > 0) {
-                            while($r = $dist_res->fetch_assoc()) {
-                                echo "<tr><td>" . htmlspecialchars($r['leave_type']) . "</td><td><strong>" . $r['count'] . " Instances</strong></td></tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='2' style='text-align:center; color: var(--text-muted); padding: 2rem;'>No tracking operations recorded yet.</td></tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+			<section class="neon-card">
+				<div class="card-title"><i class="fa-solid fa-chart-bar" style="color: var(--accent-primary);"></i> Category Load Breakdown</div>
+				<div class="table-container">
+					<table>
+						<thead><tr><th>Category Type</th><th>Recorded Actions Vol</th></tr></thead>
+						<tbody>
+							<?php
+							$dist_res = $conn->query("SELECT leave_type, COUNT(*) as count FROM leave_requests GROUP BY leave_type");
+							if ($dist_res && $dist_res->num_rows > 0) {
+								while($r = $dist_res->fetch_assoc()) {
+									echo "<tr><td>" . htmlspecialchars($r['leave_type']) . "</td><td><strong>" . $r['count'] . " Instances</strong></td></tr>";
+								}
+							} else {
+								echo "<tr><td colspan='2' style='text-align:center; color: var(--text-muted); padding: 2rem;'>No tracking operations recorded yet.</td></tr>";
+							}
+							?>
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</div>
     </main>
+	
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="analytics.js"></script>
+	
 </body>
 </html>
 <?php $conn->close(); ?>
