@@ -322,7 +322,6 @@
         .badge.approved { background: rgba(16, 185, 129, 0.15); color: var(--status-approved); }
         .badge.rejected { background: rgba(239, 68, 68, 0.15); color: var(--status-rejected); }
 
-
         /* Alerts */
         .alert {
             padding: 1rem;
@@ -338,7 +337,7 @@
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
+        
         input[type="date"]::-webkit-calendar-picker-indicator {
             filter: invert(1) brightness(100%);
             cursor: pointer;

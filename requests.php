@@ -14,35 +14,34 @@ $message = "";
 $current_user_id = $_SESSION['user_id'];
 $user_role = $_SESSION['user_role'];
 
-// 2. PROTECTED ACTION HANDLER: Only execute if the user is an authorized Manager
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
-    if ($user_role !== 'Manager') {
-        $message = "<div class='alert error'>❌ <strong>Security Violation:</strong> Staff members do not have approval clearance.</div>";
-    } else {
-        $request_id = intval($_POST['request_id']);
-        $new_status = $_POST['status_action'] === 'Approve' ? 'Approved' : 'Rejected';
-
-        // ANTI-SELF-APPROVAL GATE
-        $identity_stmt = $conn->prepare("SELECT employee_id FROM leave_requests WHERE id = ?");
-        $identity_stmt->bind_param("i", $request_id);
-        $identity_stmt->execute();
-        $identity_result = $identity_stmt->get_result()->fetch_assoc();
-        $identity_stmt->close();
-
-        if ($identity_result && $identity_result['employee_id'] === $current_user_id) {
-            $message = "<div class='alert error'>❌ <strong>Access Denied:</strong> Conflict of interest. You cannot approve or reject your own leave requests! Another manager must process this.</div>";
-        } else {
-            $stmt = $conn->prepare("UPDATE leave_requests SET status = ? WHERE id = ?");
-            $stmt->bind_param("si", $new_status, $request_id);
-            
-            if ($stmt->execute()) {
-                $message = "<div class='alert success'>Transaction complete: Leave request status mutated to $new_status.</div>";
-            } else {
-                $message = "<div class='alert error'>Processing fault error.</div>";
-            }
-            $stmt->close();
-        }
+    // Allow only Managers and Admins – silently redirect others
+    if (!in_array($user_role, ['Manager', 'Admin'])) {
+        header("Location: index.php");
+        exit();
     }
+
+    $request_id = intval($_POST['request_id']);
+    $new_status = $_POST['status_action'] === 'Approve' ? 'Approved' : 'Rejected';
+
+    // Anti‑self‑approval check
+    $identity_stmt = $conn->prepare("SELECT employee_id FROM leave_requests WHERE id = ?");
+    $identity_stmt->bind_param("i", $request_id);
+    $identity_stmt->execute();
+    $identity_result = $identity_stmt->get_result()->fetch_assoc();
+    $identity_stmt->close();
+
+    // Set approver and timestamp
+    $date_field = ($new_status === 'Approved') ? 'approval_date' : 'rejection_date';
+    $stmt = $conn->prepare("UPDATE leave_requests SET status = ?, approver_emp_id = ?, $date_field = NOW() WHERE id = ?");
+    $stmt->bind_param("ssi", $new_status, $current_user_id, $request_id);
+            
+    if ($stmt->execute()) {
+        $message = "<div class='alert success'>Transaction complete: Leave request status mutated to $new_status.</div>";
+    } else {
+        $message = "<div class='alert error'>Processing fault error.</div>";
+    }
+    $stmt->close();
 }
 ?>
 <!DOCTYPE html>

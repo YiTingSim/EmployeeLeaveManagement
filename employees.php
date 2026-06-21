@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     $manager_emp_id = !empty($_POST['manager_emp_id']) ? $_POST['manager_emp_id'] : NULL;
 
     $stmt = $conn->prepare("INSERT INTO employees (emp_id, name, department, allocated_leaves, role, password, manager_emp_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssiss", $emp_id, $name, $dept, $leaves, $role, $pass, $manager_emp_id);
+    $stmt->bind_param("sssisss", $emp_id, $name, $dept, $leaves, $role, $pass, $manager_emp_id);
     
     if ($stmt->execute()) {
         $message = "<div class='alert success'>Profile creation confirmed! Identity code: $emp_id</div>";
@@ -128,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                        <small style="color: var(--text-muted); font-size: 0.75rem;">If this employee is a top-level manager (e.g., CEO), leave as "None".</small>
+                        <small style="color: var(--text-muted); font-size: 0.75rem;">If this employee is a manager, leave as "None".</small>
                     </div>
                     <div class="form-group">
                         <label>Default Access Password</label>
