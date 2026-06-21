@@ -153,7 +153,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                             <th style="text-align: right;">Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="teamRequestsBody">
+                    <tbody>
                         <?php
                         if ($user_role === 'Admin') {
                             // Admin: Show ONLY pending requests from MANAGERS
@@ -161,7 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                             $stmt_others->bind_param("s", $current_user_id);
                         }
                         else {
-                        $stmt_others = $conn->prepare("SELECT id, employee_id, leave_type, start_date, end_date, reason FROM leave_requests WHERE status = 'Pending' AND employee_id != ? AND employee_id IN (SELECT emp_id FROM employees WHERE manager_emp_id = ?) ORDER BY id ASC");
+                        $stmt_others = $conn->prepare("SELECT id, employee_id, leave_type, start_date, end_date, days_requested, reason FROM leave_requests WHERE status = 'Pending' AND employee_id != ? AND employee_id IN (SELECT emp_id FROM employees WHERE manager_emp_id = ?) ORDER BY id ASC");
                         $stmt_others->bind_param("ss", $current_user_id, $current_user_id);
                         }
                         
@@ -175,16 +175,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                                 echo "<td>" . htmlspecialchars($row['leave_type']) . "</td>";
                                 echo "<td>" . $row['start_date'] . "</td>";
                                 echo "<td>" . $row['end_date'] . "</td>";
+                                echo "<td>" . $row['days_requested'] . "</td>";
                                 echo "<td>" . htmlspecialchars($row['reason']) . "</td>";
                                 echo "<td style='text-align: right;'>
-                                        <form method='POST' style='display:inline-flex; gap: 8px;'>
-                                            <input type='hidden' name='request_id' value='".$row['id']."'>
-                                            <button type='submit' name='status_action' value='Approve' class='badge approved' style='border:none; cursor:pointer;'>Approve</button>
-                                            <button type='submit' name='status_action' value='Reject' class='badge rejected' style='border:none; cursor:pointer;'>Reject</button>
-                                            <input type='hidden' name='update_status' value='1'>
-                                        </form>
-                                      </td>";
-                                echo "</tr>";
+                                    <form method='POST' style='display:inline-flex; gap: 8px;'>
+                                        <input type='hidden' name='request_id' value='".$row['id']."'>
+                                        <button type='submit' name='status_action' value='Approve' class='badge approved' style='border:none; cursor:pointer;'>Approve</button>
+                                        <button type='submit' name='status_action' value='Reject' class='badge rejected' style='border:none; cursor:pointer;'>Reject</button>
+                                        <input type='hidden' name='update_status' value='1'>
+                                    </form>
+                                </td>";
                             }
                         } else {
                             echo "<tr><td colspan='6' style='text-align:center; color: var(--text-muted); padding: 2rem;'>No pending requests match your role criteria.</td></tr>";

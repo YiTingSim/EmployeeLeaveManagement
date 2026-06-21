@@ -1,4 +1,4 @@
-        :root {
+:root {
             --bg-deep: #090a0f;
             --bg-surface: #12141c;
             --bg-card: #1a1d29;
@@ -337,8 +337,4 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        .nav-links a .fa-calendar-check, .top-nav-links a .fa-calendar-check {
-            color: #ffffff !important;
         }
