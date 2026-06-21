@@ -132,7 +132,7 @@ if (isset($_GET['success'])) {
     <div style="margin-bottom: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
         <div class="neon-card" style="border-left: 4px solid var(--accent-primary); padding: 20px;">
             <div style="color: var(--text-muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">
-                <i class="fa-solid fa-wallet" style="margin-right: 6px; color: var(--accent-primary);"></i> Available Quota Balance
+                <i class="fa-solid fa-wallet" style="margin-right: 6px; color: var(--accent-primary);"></i> Available Leave Balance
             </div>
             <div style="font-size: 2.2rem; font-weight: 700; margin-top: 10px; display: flex; align-items: baseline; gap: 6px;">
                 <span style="color: var(--text-color);"><?php echo $remaining_balance; ?></span>

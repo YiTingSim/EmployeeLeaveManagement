@@ -127,10 +127,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                     <table>
                         <thead>
                             <tr>
-                                <th>Identity</th>
+                                <th>Emp ID</th>
                                 <th>Name</th>
-                                <th>Domain</th>
-                                <th>Clearance</th>
+                                <th>Department</th>
+                                <th>Role</th>
                             </tr>
                         </thead>
                         <tbody>

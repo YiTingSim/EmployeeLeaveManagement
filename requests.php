@@ -108,11 +108,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                     <thead>
                         <tr>
                             <th>Emp ID</th>
-                            <th>Type</th>
+                            <th>Leave Type</th>
                             <th>Start Date</th>
                             <th>End Date</th>
-                            <th>Reason Log</th>
-                            <th style="text-align: right;">Action Control</th>
+                            <th>Reasons</th>
+                            <th style="text-align: right;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>

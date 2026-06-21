@@ -68,7 +68,7 @@ $rejected_count = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHE
     <main>
         <header>
             <div>
-                <h1>System Analytics Engine</h1>
+                <h1> Analytics </h1>
                 <p style="color: var(--text-muted); font-size: 0.9rem;">Real-time processing distribution summary logs</p>
             </div>
         </header>
@@ -83,7 +83,7 @@ $rejected_count = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHE
 		<div class="analytics-grid">
             
             <section class="neon-card">
-                <div class="card-title"><i class="fa-solid fa-chart-pie" style="color: var(--accent-primary);"></i> Status Metrics Allocation</div>
+                <div class="card-title"><i class="fa-solid fa-chart-pie" style="color: var(--accent-primary);"></i> Leave Status Tracking </div>
                 <div class="chart-viewport">
                     <canvas id="leaveStatusChart" 
                             data-approved="<?php echo (int)$approved_count; ?>" 
