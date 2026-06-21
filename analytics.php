@@ -18,7 +18,7 @@ $rejected_count = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHE
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Quantum | Statistics Engine</title>
+    <title>DayAway | Statistics Engine</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="leave_management.css">

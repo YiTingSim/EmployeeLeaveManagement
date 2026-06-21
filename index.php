@@ -113,6 +113,7 @@ if (isset($_GET['success'])) {
             </div>
             <div class="top-nav-links">
                 <a href="index.php"><i class="fa-solid fa-house"></i> Dashboard</a>
+				<a href="requests.php"><i class="fa-solid fa-calendar-check"></i> My Requests</a></li>
                 <a href="logout.php" class="logout-link"><i class="fa-solid fa-power-off"></i> Exit</a>
             </div>
         </div>
