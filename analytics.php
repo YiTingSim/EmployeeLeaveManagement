@@ -42,7 +42,7 @@ $rejected_count = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHE
                 <li class="active"><a href="analytics.php"><i class="fa-solid fa-chart-pie"></i> Analytics</a></li>
             <?php endif; ?>
             
-            <li style="margin-top: auto;"><a href="logout.php" style="color: #ef4444;"><i class="fa-solid fa-power-off"></i> Logout</a></li>
+            <li style="margin-top: auto;"><a href="logout.php" style="color: #ef4444;" onclick="return confirmLogout()"><i class="fa-solid fa-power-off"></i> Logout</a></li>
         </ul>
     </aside>
 	
@@ -55,7 +55,7 @@ $rejected_count = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHE
             </div>
             <div class="top-nav-links">
                 <a href="index.php"><i class="fa-solid fa-house"></i> Dashboard</a>
-                <a href="logout.php" class="logout-link"><i class="fa-solid fa-power-off"></i> Exit</a>
+                <a href="logout.php" class="logout-link" onclick="return confirmLogout()"><i class="fa-solid fa-power-off"></i> Exit</a>
 			</div>
 		</div>
     </nav>
@@ -115,6 +115,13 @@ $rejected_count = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHE
 			</section>
 		</div>
     </main>
+    <script>
+        function confirmLogout() {
+            return confirm(
+                "Are you sure you want to log out?"
+            );
+        }
+    </script>
 	
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script src="analytics.js"></script>

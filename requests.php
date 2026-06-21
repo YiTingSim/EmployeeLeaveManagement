@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
             <li class="active"><a href="requests.php"><i class="fa-solid fa-calendar-check"></i> Leave Requests</a></li>
             <li><a href="employees.php"><i class="fa-solid fa-users"></i> Employees</a></li>
             <li><a href="analytics.php"><i class="fa-solid fa-chart-pie"></i> Analytics</a></li>
-            <li style="margin-top: auto;"><a href="logout.php" style="color: #ef4444;"><i class="fa-solid fa-power-off"></i> Logout</a></li>
+            <li style="margin-top: auto;"><a href="logout.php" style="color: #ef4444;" onclick="return confirmLogout()"><i class="fa-solid fa-power-off"></i> Logout</a></li>
         </ul>
     </aside>
 <?php else: ?>
@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
             <div class="top-nav-links">
                 <a href="index.php"><i class="fa-solid fa-house"></i> Dashboard</a>
                 <a href="requests.php" class="active"><i class="fa-solid fa-calendar-check"></i> My Requests</a>
-                <a href="logout.php" class="logout-link"><i class="fa-solid fa-power-off"></i> Exit</a>
+                <a href="logout.php" class="logout-link" onclick="return confirmLogout()"><i class="fa-solid fa-power-off"></i> Exit</a>
             </div>
         </div>
     </nav>
@@ -210,6 +210,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
         <?php endif; ?>
         
     </main>
+    <script>
+        function confirmLogout() {
+            return confirm(
+                "Are you sure you want to log out?"
+            );
+        }
+    </script>
 </body>
 </html>
 <?php $conn->close(); ?>

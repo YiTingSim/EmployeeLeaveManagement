@@ -109,7 +109,7 @@ if (isset($_GET['success'])) {
                 <li><a href="employees.php"><i class="fa-solid fa-users"></i> Employees</a></li>
                 <li><a href="analytics.php"><i class="fa-solid fa-chart-pie"></i> Analytics</a></li>
             <?php endif; ?>
-            <li style="margin-top: auto;"><a href="logout.php" style="color: #ef4444;"><i class="fa-solid fa-power-off"></i> Logout</a></li>
+            <li style="margin-top: auto;"><a href="#" onclick="confirmLogout()" style="color: #ef4444;"><i class="fa-solid fa-power-off"></i> Logout</a></li>
         </ul>
     </aside>
 <?php else: ?>
@@ -122,7 +122,7 @@ if (isset($_GET['success'])) {
             <div class="top-nav-links">
                 <a href="index.php"><i class="fa-solid fa-house"></i> Dashboard</a>
 				<a href="requests.php"><i class="fa-solid fa-calendar-check"></i> My Requests</a></li>
-                <a href="logout.php" class="logout-link"><i class="fa-solid fa-power-off"></i> Exit</a>
+                <a href="#" class="logout-link" onclick="confirmLogout()"><i class="fa-solid fa-power-off"></i> Exit</a>
             </div>
         </div>
     </nav>
@@ -230,6 +230,11 @@ if (isset($_GET['success'])) {
 </main>
 
 <script>
+function confirmLogout() {
+    if (confirm("Are you sure you want to log out?")) {
+        window.location.href = "logout.php";
+    }
+}
     document.addEventListener('DOMContentLoaded', () => {
         const start = document.getElementById('start_date');
         const end = document.getElementById('end_date');

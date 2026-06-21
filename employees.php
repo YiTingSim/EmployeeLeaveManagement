@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                 <li><a href="analytics.php"><i class="fa-solid fa-chart-pie"></i> Analytics</a></li>
             <?php endif; ?>
             
-            <li style="margin-top: auto;"><a href="logout.php" style="color: #ef4444;"><i class="fa-solid fa-power-off"></i> Logout</a></li>
+            <li style="margin-top: auto;"><a href="logout.php" style="color: #ef4444;" onclick="return confirmLogout()"><i class="fa-solid fa-power-off"></i> Logout</a></li>
         </ul>
     </aside>
 	
@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
             </div>
             <div class="top-nav-links">
                 <a href="index.php"><i class="fa-solid fa-house"></i> Dashboard</a>
-                <a href="logout.php" class="logout-link"><i class="fa-solid fa-power-off"></i> Exit</a>
+                <a href="logout.php" class="logout-link" onclick="return confirmLogout()"><i class="fa-solid fa-power-off"></i> Exit</a>
 			</div>
 		</div>
     </nav>
@@ -182,6 +182,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
             </section>
         </div>
     </main>
+    <script>
+        function confirmLogout() {
+            return confirm(
+                "Are you sure you want to log out?"
+            );
+        }
+    </script>
 </body>
 </html>
 <?php $conn->close(); ?>
