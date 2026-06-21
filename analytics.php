@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'Manager') {
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['user_role'], ['Manager', 'Admin'])) {
     header("Location: index.php");
     exit();
 }
@@ -28,15 +28,15 @@ $rejected_count = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHE
         .metric-value { font-size: 2.5rem; font-weight: 700; color: #fff; margin-top: 0.5rem; }
     </style>
 </head>
-<body class="<?php echo ($_SESSION['user_role'] === 'Manager') ? 'manager-layout' : 'employee-layout'; ?>">
-<?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Manager'): ?>
+<body class="<?php echo (in_array($_SESSION['user_role'], ['Manager', 'Admin'])) ? 'manager-layout' : 'employee-layout'; ?>">
+<?php if (isset($_SESSION['user_role']) && in_array($_SESSION['user_role'], ['Manager', 'Admin'])): ?>
     <aside id="sidebar">
         <div class="brand"><i class="fa-solid fa-layer-group"></i> <span>DayAway</span>
 		</div>
         <ul class="nav-links">
             <li><a href="index.php"><i class="fa-solid fa-house"></i> Dashboard</a></li>
             
-            <?php if ($_SESSION['user_role'] === 'Manager'): ?>
+            <?php if (in_array($_SESSION['user_role'], ['Manager', 'Admin'])): ?>
                 <li><a href="requests.php"><i class="fa-solid fa-calendar-check"></i> Leave Requests</a></li>
                 <li><a href="employees.php"><i class="fa-solid fa-users"></i> Employees</a></li>
                 <li class="active"><a href="analytics.php"><i class="fa-solid fa-chart-pie"></i> Analytics</a></li>

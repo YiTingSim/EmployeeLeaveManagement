@@ -49,11 +49,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_leave'])) {
     $start_date = htmlspecialchars($_POST['start_date']);
     $end_date = htmlspecialchars($_POST['end_date']);
     $reason = htmlspecialchars($_POST['reason']);
-    $status = "Pending"; 
+    if ($_SESSION['user_role'] === 'Admin') {
+        $status = "Approved";
+        $approver_id = $_SESSION['user_id']; // Admin approves themselves
+    } else {
+        $status = "Pending";
+        $approver_id = NULL;
+    }
 
     if (!empty($leave_type) && !empty($start_date) && !empty($end_date)) {
-        $stmt = $conn->prepare("INSERT INTO leave_requests (employee_id, leave_type, start_date, end_date, reason, status) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $employee_id, $leave_type, $start_date, $end_date, $reason, $status);
+        $days_requested = (strtotime($end_date) - strtotime($start_date)) / (60 * 60 * 24) + 1;
+
+        $stmt = $conn->prepare("INSERT INTO leave_requests (employee_id, leave_type, start_date, end_date, days_requested, reason, status, approver_emp_id, approval_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+        $stmt->bind_param("ssssisss", $employee_id, $leave_type, $start_date, $end_date, $days_requested, $reason, $status, $approver_id);
 
         try {
             if ($stmt->execute()) {
@@ -90,13 +98,13 @@ if (isset($_GET['success'])) {
     <link rel="stylesheet" href="leave_management.css">
 </head>
 
-<body class="<?php echo ($_SESSION['user_role'] === 'Manager') ? 'manager-layout' : 'employee-layout'; ?>">
-<?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Manager'): ?>
+<body class="<?php echo (in_array($_SESSION['user_role'], ['Manager', 'Admin'])) ? 'manager-layout' : 'employee-layout'; ?>">
+<?php if (isset($_SESSION['user_role']) && in_array($_SESSION['user_role'], ['Manager', 'Admin'])): ?>
     <aside id="sidebar">
         <div class="brand"><i class="fa-solid fa-layer-group"></i> <span>DayAway</span></div>
         <ul class="nav-links">
             <li class="active"><a href="index.php"><i class="fa-solid fa-house"></i> Dashboard</a></li>            
-            <?php if ($_SESSION['user_role'] === 'Manager'): ?>
+            <?php if (in_array($_SESSION['user_role'], ['Manager', 'Admin'])): ?>
                 <li><a href="requests.php"><i class="fa-solid fa-calendar-check"></i> Leave Requests</a></li>
                 <li><a href="employees.php"><i class="fa-solid fa-users"></i> Employees</a></li>
                 <li><a href="analytics.php"><i class="fa-solid fa-chart-pie"></i> Analytics</a></li>

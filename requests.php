@@ -54,9 +54,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="leave_management.css">
 </head>
-<body class="<?php echo ($user_role === 'Manager') ? 'manager-layout' : 'employee-layout'; ?>">
+<body class="<?php echo ($user_role === 'Manager' || $user_role === 'Admin') ? 'manager-layout' : 'employee-layout'; ?>">
 
-<?php if ($user_role === 'Manager'): ?>
+<?php if ($user_role === 'Manager' || $user_role === 'Admin'): ?>
     <aside id="sidebar">
         <div class="brand"><i class="fa-solid fa-layer-group"></i> <span>DayAway</span></div>
         <ul class="nav-links">
@@ -135,9 +135,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
             </div>
         </section>
 
-        <?php if ($user_role === 'Manager'): ?>
+        <?php if ($user_role === 'Manager' || $user_role === 'Admin'): ?>
         <section class="neon-card">
-            <div class="card-title"><i class="fa-solid fa-list-check" style="color: var(--accent-primary);"></i> Employee Leave Request</div>
+            <div class="card-title"><i class="fa-solid fa-list-check" style="color: var(--accent-primary);"></i>
+                <?php echo ($user_role === 'Admin') ? 'Manager Leave Requests' : 'Employee Leave Requests'; ?>
+            </div>
             <div class="table-container">
                 <table>
                     <thead>
@@ -146,14 +148,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                             <th>Leave Type</th>
                             <th>Start Date</th>
                             <th>End Date</th>
+                            <th>Days</th>
                             <th>Reasons</th>
                             <th style="text-align: right;">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="teamRequestsBody">
                         <?php
-                        $stmt_others = $conn->prepare("SELECT id, employee_id, leave_type, start_date, end_date, reason FROM leave_requests WHERE employee_id != ? AND status = 'Pending' ORDER BY id ASC");
-                        $stmt_others->bind_param("s", $current_user_id);
+                        if ($user_role === 'Admin') {
+                            // Admin: Show ONLY pending requests from MANAGERS
+                            $stmt_others = $conn->prepare("SELECT lr.id, lr.employee_id, lr.leave_type, lr.start_date, lr.end_date, lr.days_requested, lr.reason FROM leave_requests lr, employees e WHERE lr.employee_id = e.emp_id AND lr.status = 'Pending' AND e.role = 'Manager' AND lr.employee_id != ? ORDER BY lr.id ASC");
+                            $stmt_others->bind_param("s", $current_user_id);
+                        }
+                        else {
+                        $stmt_others = $conn->prepare("SELECT id, employee_id, leave_type, start_date, end_date, reason FROM leave_requests WHERE status = 'Pending' AND employee_id != ? AND employee_id IN (SELECT emp_id FROM employees WHERE manager_emp_id = ?) ORDER BY id ASC");
+                        $stmt_others->bind_param("ss", $current_user_id, $current_user_id);
+                        }
+                        
                         $stmt_others->execute();
                         $result_others = $stmt_others->get_result();
 
@@ -176,7 +187,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                                 echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='6' style='text-align:center; color: var(--text-muted); padding: 2rem;'>All operational team records are current. No pending evaluations.</td></tr>";
+                            echo "<tr><td colspan='6' style='text-align:center; color: var(--text-muted); padding: 2rem;'>No pending requests match your role criteria.</td></tr>";
                         }
                         $stmt_others->close();
                         ?>

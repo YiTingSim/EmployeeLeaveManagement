@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'Manager') {
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['user_role'], ['Manager', 'Admin'])) {
     header("Location: index.php");
     exit();
 }
@@ -10,6 +10,14 @@ $conn = new mysqli("localhost", "root", "", "leave_management");
 if ($conn->connect_error) { die("Database link failure."); }
 
 $message = "";
+$manager_list = [];
+$managers_sql = "SELECT emp_id, name FROM employees WHERE role = 'Manager' ORDER BY name";
+$managers_result = $conn->query($managers_sql);
+if ($managers_result && $managers_result->num_rows > 0) {
+    while ($m = $managers_result->fetch_assoc()) {
+        $manager_list[] = $m;
+    }
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     $emp_id = htmlspecialchars(trim($_POST['emp_id']));
@@ -18,9 +26,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     $leaves = intval($_POST['leaves']);
     $role = htmlspecialchars($_POST['role']);
     $pass = trim($_POST['password']);
+    $manager_emp_id = !empty($_POST['manager_emp_id']) ? $_POST['manager_emp_id'] : NULL;
 
-    $stmt = $conn->prepare("INSERT INTO employees (emp_id, name, department, allocated_leaves, role, password) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssiss", $emp_id, $name, $dept, $leaves, $role, $pass);
+    $stmt = $conn->prepare("INSERT INTO employees (emp_id, name, department, allocated_leaves, role, password, manager_emp_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssiss", $emp_id, $name, $dept, $leaves, $role, $pass, $manager_emp_id);
     
     if ($stmt->execute()) {
         $message = "<div class='alert success'>Profile creation confirmed! Identity code: $emp_id</div>";
@@ -39,15 +48,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="leave_management.css">
 </head>
-<body class="<?php echo ($_SESSION['user_role'] === 'Manager') ? 'manager-layout' : 'employee-layout'; ?>">
-<?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Manager'): ?>
+<body class="<?php echo (in_array($_SESSION['user_role'], ['Manager', 'Admin'])) ? 'manager-layout' : 'employee-layout'; ?>">
+<?php if (isset($_SESSION['user_role']) && in_array($_SESSION['user_role'], ['Manager', 'Admin'])): ?>
     <aside id="sidebar">
         <div class="brand"><i class="fa-solid fa-layer-group"></i> <span>DayAway</span>
 		</div>
         <ul class="nav-links">
             <li><a href="index.php"><i class="fa-solid fa-house"></i> Dashboard</a></li>
             
-            <?php if ($_SESSION['user_role'] === 'Manager'): ?>
+            <?php if (in_array($_SESSION['user_role'], ['Manager', 'Admin'])): ?>
                 <li><a href="requests.php"><i class="fa-solid fa-calendar-check"></i> Leave Requests</a></li>
                 <li class="active"><a href="employees.php"><i class="fa-solid fa-users"></i> Employees</a></li>
                 <li><a href="analytics.php"><i class="fa-solid fa-chart-pie"></i> Analytics</a></li>
@@ -108,6 +117,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                             <option value="Employee">Employee Profile (Limited Clearance)</option>
                             <option value="Manager">Manager Profile (Authoritative Clearance)</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Immediate Supervisor (Manager)</label>
+                        <select name="manager_emp_id" class="form-control">
+                            <option value="">-- None / Unassigned --</option>
+                            <?php foreach ($manager_list as $manager): ?>
+                                <option value="<?php echo htmlspecialchars($manager['emp_id']); ?>">
+                                    <?php echo htmlspecialchars($manager['emp_id'] . ' - ' . $manager['name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <small style="color: var(--text-muted); font-size: 0.75rem;">If this employee is a top-level manager (e.g., CEO), leave as "None".</small>
                     </div>
                     <div class="form-group">
                         <label>Default Access Password</label>

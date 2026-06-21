@@ -1,4 +1,4 @@
-:root {
+        :root {
             --bg-deep: #090a0f;
             --bg-surface: #12141c;
             --bg-card: #1a1d29;
@@ -322,6 +322,7 @@
         .badge.approved { background: rgba(16, 185, 129, 0.15); color: var(--status-approved); }
         .badge.rejected { background: rgba(239, 68, 68, 0.15); color: var(--status-rejected); }
 
+
         /* Alerts */
         .alert {
             padding: 1rem;
@@ -336,4 +337,8 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-links a .fa-calendar-check, .top-nav-links a .fa-calendar-check {
+            color: #ffffff !important;
         }
