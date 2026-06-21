@@ -217,7 +217,7 @@ if (isset($_GET['success'])) {
                                 echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='3' style='text-align:center; color: var(--text-muted); padding: 2rem;'>No personal logs filed under your session token.</td></tr>";
+                            echo "<tr><td colspan='3' style='text-align:center; color: var(--text-muted); padding: 2rem;'>You have no leave request yet.</td></tr>";
                         }
                         $stmt->close();
                         $conn->close();

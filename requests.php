@@ -138,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                                 echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='6' style='text-align:center; color: var(--text-muted); padding: 2rem;'>You have no pending personal leave requests.</td></tr>";
+                            echo "<tr><td colspan='7' style='text-align:center; color: var(--text-muted); padding: 2rem;'>You have no leave request yet.</td></tr>";
                         }
                         $stmt_own->close();
                         ?>
