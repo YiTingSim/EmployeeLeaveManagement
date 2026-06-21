@@ -109,21 +109,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                     <tbody>
                         <?php
                         // Dynamically filters by whoever is logged in ($current_user_id)
-                        $stmt_own = $conn->prepare("SELECT id, employee_id, leave_type, start_date, end_date, days_requested, reason FROM leave_requests WHERE employee_id = ? AND status = 'Pending' ORDER BY id ASC");
+                        $stmt_own = $conn->prepare("SELECT id, employee_id, leave_type, start_date, end_date, days_requested, reason, status FROM leave_requests WHERE employee_id = ?  ORDER BY id ASC");
                         $stmt_own->bind_param("s", $current_user_id);
                         $stmt_own->execute();
                         $result_own = $stmt_own->get_result();
 
                         if ($result_own && $result_own->num_rows > 0) {
                             while($row = $result_own->fetch_assoc()) {
+                                $raw_status = strtolower($row['status']);
+                                $badge_class = 'pending'; 
+
+                                if ($raw_status === 'approved') {
+                                    $badge_class = 'approved';
+                                } elseif ($raw_status === 'rejected') {
+                                    $badge_class = 'rejected';
+                                }
+
                                 echo "<tr>";
                                 echo "<td><strong>" . htmlspecialchars($row['employee_id']) . " (You)</strong></td>";
                                 echo "<td>" . htmlspecialchars($row['leave_type']) . "</td>";
-                                echo "<td>" . $row['start_date'] . "</td>";
-                                echo "<td>" . $row['end_date'] . "</td>";
-                                echo "<td>" . $row['days_requested'] . "</td>";
+                                echo "<td>" . htmlspecialchars($row['start_date']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['end_date']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['days_requested']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['reason']) . "</td>";
-                                echo "<td style='text-align: right;'><span class='badge pending'>Pending</span></td>";
+                                
+                                /* This now displays properly since $row['status'] is selected */
+                                echo "<td style='text-align: right;'><span class='badge " . $badge_class . "'>" . htmlspecialchars($row['status']) . "</span></td>";
                                 echo "</tr>";
                             }
                         } else {
