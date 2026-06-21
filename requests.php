@@ -102,6 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                             <th>Leave Type</th>
                             <th>Start Date</th>
                             <th>End Date</th>
+                            <th>Days</th>
                             <th>Reasons</th>
                             <th style="text-align: right;">Status</th>
                         </tr>
@@ -109,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                     <tbody>
                         <?php
                         // Dynamically filters by whoever is logged in ($current_user_id)
-                        $stmt_own = $conn->prepare("SELECT id, employee_id, leave_type, start_date, end_date, reason FROM leave_requests WHERE employee_id = ? AND status = 'Pending' ORDER BY id ASC");
+                        $stmt_own = $conn->prepare("SELECT id, employee_id, leave_type, start_date, end_date, days_requested, reason FROM leave_requests WHERE employee_id = ? AND status = 'Pending' ORDER BY id ASC");
                         $stmt_own->bind_param("s", $current_user_id);
                         $stmt_own->execute();
                         $result_own = $stmt_own->get_result();
@@ -121,6 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                                 echo "<td>" . htmlspecialchars($row['leave_type']) . "</td>";
                                 echo "<td>" . $row['start_date'] . "</td>";
                                 echo "<td>" . $row['end_date'] . "</td>";
+                                echo "<td>" . $row['days_requested'] . "</td>";
                                 echo "<td>" . htmlspecialchars($row['reason']) . "</td>";
                                 echo "<td style='text-align: right;'><span class='badge pending'>Pending</span></td>";
                                 echo "</tr>";
