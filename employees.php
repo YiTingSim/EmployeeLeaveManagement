@@ -31,10 +31,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     $stmt = $conn->prepare("INSERT INTO employees (emp_id, name, department, allocated_leaves, role, password, manager_emp_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("sssisss", $emp_id, $name, $dept, $leaves, $role, $pass, $manager_emp_id);
     
-    if ($stmt->execute()) {
-        $message = "<div class='alert success'>Profile creation confirmed! Identity code: $emp_id</div>";
-    } else {
-        $message = "<div class='alert error'>Processing conflict: Entry identifier signature collision.</div>";
+    try {
+        if ($stmt->execute()) {
+            $message = "<div class='alert success'>✅ Profile creation confirmed! Identity code: $emp_id</div>";
+        }
+    } catch (mysqli_sql_exception $e) {
+        // Check if the error is due to duplicate entry (error code 1062)
+        if ($e->getCode() == 1062) {
+            $message = "<div class='alert error'>❌ Employee ID <strong>'$emp_id'</strong> already exists. Please use a unique ID.</div>";
+        } else {
+            $message = "<div class='alert error'>❌ Database error: " . htmlspecialchars($e->getMessage()) . "</div>";
+        }
     }
     $stmt->close();
 }
