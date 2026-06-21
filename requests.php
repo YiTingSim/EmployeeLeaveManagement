@@ -199,7 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                                 </td>";
                             }
                         } else {
-                            echo "<tr><td colspan='6' style='text-align:center; color: var(--text-muted); padding: 2rem;'>No pending requests match your role criteria.</td></tr>";
+                            echo "<tr><td colspan='6' style='text-align:center; color: var(--text-muted); padding: 2rem;'>No pending requests under your team.</td></tr>";
                         }
                         $stmt_others->close();
                         ?>
