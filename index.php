@@ -40,6 +40,32 @@ $used_stmt->close();
 // 3. Compute structural remaining available allowance string
 $remaining_balance = $total_allocated - $total_used;
 
+// ======================================================================
+//  BROADCAST NOTIFICATION SYSTEM: Fetch Admin Absences  
+// ======================================================================
+$admin_absences = [];
+$user_role = $_SESSION['user_role'] ?? 'Staff'; // 🌟 FIXED: Changed $SESSION to $_SESSION
+
+if ($user_role !== 'Admin') {
+    $stmt_admin_notif = $conn->prepare("
+        SELECT lr.leave_type, lr.start_date, lr.end_date, e.name 
+        FROM leave_requests lr
+        JOIN employees e ON lr.employee_id = e.emp_id
+        WHERE e.role IN ('Admin') 
+          AND lr.status = 'Approved' 
+          AND lr.end_date >= CURDATE()
+        ORDER BY lr.start_date ASC
+    ");
+    if ($stmt_admin_notif) {
+        $stmt_admin_notif->execute();
+        $res_admin_notif = $stmt_admin_notif->get_result();
+        while ($row = $res_admin_notif->fetch_assoc()) {
+            $admin_absences[] = $row;
+        }
+        $stmt_admin_notif->close();
+    }
+}
+
 
 // ======================================================================
 // PROCESSING LAYER: Form Submissions
@@ -69,17 +95,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_leave'])) {
                 exit();
             }
         } catch (mysqli_sql_exception $e) {
-            // This grabs JUST your custom text from the trigger: "Error: Leave allocation limit..."
             $clean_error = $e->getMessage();
-            
-            // Format it beautifully into your standard error box style
             $message = "<div class='alert error'>❌ " . htmlspecialchars($clean_error) . "</div>";
         }
         
         $stmt->close();
-	} else {
-		$message = "<div class='alert error'>⚠️ Please fill out all required fields.</div>";
-	}
+    } else {
+        $message = "<div class='alert error'>⚠️ Please fill out all required fields.</div>";
+    }
 }
 
 // Intercept success flag parameter hooks following post updates
@@ -121,7 +144,7 @@ if (isset($_GET['success'])) {
             </div>
             <div class="top-nav-links">
                 <a href="index.php"><i class="fa-solid fa-house"></i> Dashboard</a>
-				<a href="requests.php"><i class="fa-solid fa-calendar-check"></i> My Requests</a></li>
+                <a href="requests.php"><i class="fa-solid fa-calendar-check"></i> My Requests</a>
                 <a href="#" class="logout-link" onclick="confirmLogout()"><i class="fa-solid fa-power-off"></i> Exit</a>
             </div>
         </div>
@@ -137,6 +160,20 @@ if (isset($_GET['success'])) {
     </header>
 
     <?php echo $message; ?>
+    
+    <?php if (($user_role !== 'Admin') && !empty($admin_absences)): ?>
+        <div style="margin-bottom: 24px;">
+            <?php foreach ($admin_absences as $absence): ?>
+                <div class="alert info" style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); display: flex; align-items: center; gap: 12px; margin-bottom: 10px; padding: 1rem; border-radius: 8px;">
+                    <i class="fa-solid fa-bullhorn" style="color: #6366f1; font-size: 1.1rem;"></i>
+                    <span style="color: #e5e7eb; font-size: 0.9rem;">
+                        <strong>Admin Absence Update:</strong> Admin <span style="color: #6366f1; font-weight: 600;"><?php echo htmlspecialchars($absence['name']); ?></span> has scheduled <strong><?php echo htmlspecialchars($absence['leave_type']); ?></strong> from <code><?php echo date('M d, Y', strtotime($absence['start_date'])); ?></code> to <code><?php echo date('M d, Y', strtotime($absence['end_date'])); ?></code>.
+                    </span>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+    
 
     <div style="margin-bottom: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
         <div class="neon-card" style="border-left: 4px solid var(--accent-primary); padding: 20px;">
@@ -235,20 +272,20 @@ function confirmLogout() {
         window.location.href = "logout.php";
     }
 }
-    document.addEventListener('DOMContentLoaded', () => {
-        const start = document.getElementById('start_date');
-        const end = document.getElementById('end_date');
-        const today = new Date().toISOString().split('T')[0];
-        start.min = today; end.min = today;
+document.addEventListener('DOMContentLoaded', () => {
+    const start = document.getElementById('start_date');
+    const end = document.getElementById('end_date');
+    const today = new Date().toISOString().split('T')[0];
+    start.min = today; end.min = today;
 
-        document.getElementById('leaveForm').addEventListener('submit', (e) => {
-            if (new Date(end.value) < new Date(start.value)) {
-                e.preventDefault();
-                alert('⚠️ Operational Conflict: End date boundary constraint error.');
-            }
-        });
-        start.addEventListener('change', () => { if(start.value) end.min = start.value; });
+    document.getElementById('leaveForm').addEventListener('submit', (e) => {
+        if (new Date(end.value) < new Date(start.value)) {
+            e.preventDefault();
+            alert('⚠️ Operational Conflict: End date boundary constraint error.');
+        }
     });
+    start.addEventListener('change', () => { if(start.value) end.min = start.value; });
+});
 </script>
 </body>
 </html>
