@@ -44,7 +44,7 @@ $remaining_balance = $total_allocated - $total_used;
 //  BROADCAST NOTIFICATION SYSTEM: Fetch Admin Absences  
 // ======================================================================
 $admin_absences = [];
-$user_role = $_SESSION['user_role'] ?? 'Staff'; // 🌟 FIXED: Changed $SESSION to $_SESSION
+$user_role = $_SESSION['user_role'] ?? 'Staff'; 
 
 if ($user_role !== 'Admin') {
     $stmt_admin_notif = $conn->prepare("
