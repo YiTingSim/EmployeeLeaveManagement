@@ -108,6 +108,7 @@ if (isset($_GET['success'])) {
                 <li><a href="requests.php"><i class="fa-solid fa-calendar-check"></i> Leave Requests</a></li>
                 <li><a href="employees.php"><i class="fa-solid fa-users"></i> Employees</a></li>
                 <li><a href="analytics.php"><i class="fa-solid fa-chart-pie"></i> Analytics</a></li>
+                <li><a href="password_requests.php"><i class="fa-solid fa-key"></i>Password Requests</a></li>
             <?php endif; ?>
             <li style="margin-top: auto;"><a href="#" onclick="confirmLogout()" style="color: #ef4444;"><i class="fa-solid fa-power-off"></i> Logout</a></li>
         </ul>

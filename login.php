@@ -11,6 +11,71 @@ if ($conn->connect_error) {
 }
 
 $error = "";
+$success = "";
+
+if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST['reset_password'])){
+
+    $emp_id = trim($_POST['reset_emp']);
+
+    $new_password = trim($_POST['new_password']);
+
+    $confirm = isset($_POST['confirm_password']) ? trim($_POST['confirm_password']): "";
+
+    if($new_password != $confirm){
+
+    $error ="❌ Password mismatch.";
+
+    }
+    else{
+
+        $stmt = $conn->prepare(
+            "
+            SELECT name
+            FROM employees
+            WHERE emp_id=?
+            "
+        );
+
+        $stmt->bind_param("s", $emp_id);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if($result->num_rows == 1){
+
+            $update = $conn->prepare(
+                "
+                UPDATE employees
+                SET
+                password_request=?,
+                password_status='Pending'
+                WHERE emp_id=?
+                "
+            );
+
+            $update->bind_param("ss", $new_password, $emp_id);
+
+            if($update->execute()){
+
+                $success = "✅ Password change request is submitted for approval. Please wait for the manager's confirmation.";
+
+            }
+
+            $update->close();
+
+        }
+            else{
+
+            $error = "❌ Employee ID not found.";
+
+            }
+
+        $stmt->close();
+
+    }
+
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     $emp_id = htmlspecialchars(trim($_POST['emp_id']));
@@ -75,7 +140,13 @@ $conn->close();
             <p>Please authenticate at this kiosk node to manage leaves</p>
         </div>
         
-        <?php if(!empty($error)) echo "<div class='alert error' style='margin-bottom:1.5rem;'>$error</div>"; ?>
+        <?php
+
+            if(!empty($error)) echo "<div class='alert error'>$error</div>";
+
+            if(!empty($success)) echo "<div class='alert success'>$success</div>";
+        
+        ?>
 
         <form method="POST" action="login.php">
             <div class="form-group">
@@ -88,6 +159,56 @@ $conn->close();
             </div>
             <button type="submit" name="login" class="btn-submit" style="margin-top: 1.5rem;">Access Dashboard</button>
         </form>
+
+        <div style="text-align:center; margin-top:15px;"><a href="#" onclick="toggleReset(); return false;">Forgot Password?</a></div>
+
+         <div id="resetBox" style="display:none; margin-top:20px;">
+            
+            <h3 style="margin-bottom:15px;">Reset Password</h3>
+            
+            <form method="POST">
+
+                <div class="form-group">
+                    <label>Employee ID</label>
+                    <input
+                        type="text"
+                        name="reset_emp"
+                        class="form-control"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input
+                        type="password"
+                        name="new_password"
+                        class="form-control"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input
+                        type="password"
+                        name="confirm_password"
+                        class="form-control"
+                        required>
+                </div>
+
+                <button type="submit" name="reset_password" class="btn-submit">Reset Password</button>
+
+            </form>
+
+        </div>
     </div>
+    <script>
+
+        function toggleReset() {
+
+        const box = document.getElementById('resetBox');
+
+        box.style.display = box.style.display === 'none' ? 'block' : 'none';}
+        
+    </script>
 </body>
 </html>
