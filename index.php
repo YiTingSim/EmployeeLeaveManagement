@@ -168,7 +168,7 @@ if (isset($_GET['success'])) {
                 <div class="alert info" style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); display: flex; align-items: center; gap: 12px; margin-bottom: 10px; padding: 1rem; border-radius: 8px;">
                     <i class="fa-solid fa-bullhorn" style="color: #6366f1; font-size: 1.1rem;"></i>
                     <span style="color: #e5e7eb; font-size: 0.9rem;">
-                        <strong>Admin Absence Update:</strong> Admin <span style="color: #6366f1; font-weight: 600;"><?php echo htmlspecialchars($absence['name']); ?></span> has scheduled <strong><?php echo htmlspecialchars($absence['leave_type']); ?></strong> from <code><?php echo date('M d, Y', strtotime($absence['start_date'])); ?></code> to <code><?php echo date('M d, Y', strtotime($absence['end_date'])); ?></code>.
+                        <strong>Admin Absence Update:</strong> <span style="color: #6366f1; font-weight: 600;"><?php echo htmlspecialchars($absence['name']); ?></span> has scheduled <strong><?php echo htmlspecialchars($absence['leave_type']); ?></strong> from <code><?php echo date('M d, Y', strtotime($absence['start_date'])); ?></code> to <code><?php echo date('M d, Y', strtotime($absence['end_date'])); ?></code>.
                     </span>
                 </div>
             <?php endforeach; ?>
