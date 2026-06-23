@@ -122,7 +122,7 @@ $conn->close();
     <style>
         body { display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;}
 		.video-bg { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index:-100;}
-        .login-card { width: 100%; max-width: 420px; padding: 2.5rem; background: #111827; border: 1px solid #1f2937; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        .login-card { width: 100%; max-width: 420px; padding: 2.5rem; background: rgba(17, 24, 39, 0.5); border: 1px solid #1f2937; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
         .login-header { text-align: center; margin-bottom: 2rem; }
         .login-header h1 { font-size: 1.8rem; font-weight: 700; color: #fff; letter-spacing: 2px; margin: 0; }
         .login-header p { color: #9ca3af; font-size: 0.85rem; margin-top: 0.5rem; }

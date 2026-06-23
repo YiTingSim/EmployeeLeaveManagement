@@ -1,12 +1,12 @@
 :root {
             --bg-deep: #090a0f;
-            --bg-surface: #12141c;
-            --bg-card: #1a1d29;
+            --bg-surface: rgba(30, 20, 54, 1); 
+            --bg-card: rgba(21, 21, 33,1);
             --accent-primary: #6366f1; /* Indigo Neon */
             --accent-glow: rgba(99, 102, 241, 0.15);
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
-            --border-color: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.05);  //the a indicates semi transparent color
             
             --status-pending: #f59e0b;
             --status-approved: #10b981;
@@ -47,6 +47,7 @@
 			background: var(--bg-surface);
 			border-bottom: 1px solid var(--border-color);
 			padding: 1rem;
+			backdrop-filter: blur(2px);
 		}
 
 		.nav-container {
@@ -92,6 +93,7 @@
         aside {
             width: 280px;
             background: var(--bg-surface);
+			backdrop-filter: blur(3px);
             border-right: 1px solid var(--border-color);
             padding: 2rem 1.5rem;
             display: flex;
@@ -190,13 +192,14 @@
 
         /* Reusable Card Styling */
         .neon-card {
-            background: var(--bg-surface);
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 2rem;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
+			background: rgba(18, 20, 28, 0.6); 
+			backdrop-filter: blur(12px);
         }
 
         .neon-card::before {
