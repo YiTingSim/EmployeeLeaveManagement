@@ -137,7 +137,7 @@ $conn->close();
     <div class="login-card">
         <div class="login-header">
             <h1>DayAway SYSTEM</h1>
-            <p>Please authenticate at this kiosk node to manage leaves</p>
+            <p>Please authenticate to access DayAway</p>
         </div>
         
         <?php
