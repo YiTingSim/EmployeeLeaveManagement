@@ -112,8 +112,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                         <input type="text" name="emp_id" class="form-control" placeholder="e.g., EMP-1094" required>
                     </div>
                     <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" name="name" class="form-control" placeholder="Jane Doe" required>
+                        <label>Full Name (less than 18 characters)</label>
+                        <input type="text" name="name" class="form-control" placeholder="Jane Doe" maxlength="18" data-validate="name" required>
                     </div>
                     <div class="form-group">
                         <label>Operational Domain / Department</label>
@@ -190,6 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
             );
         }
     </script>
+    <script src="validation.js"></script>
 </body>
 </html>
 <?php $conn->close(); ?>

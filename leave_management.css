@@ -344,3 +344,46 @@
             filter: invert(1) brightness(100%);
             cursor: pointer;
         }
+
+        /* Validation feedback */
+        .validation-error {
+            color: var(--status-rejected);
+            font-size: 0.8rem;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .validation-error.show {
+            display: block;
+        }
+
+        .field-success {
+            color: var(--status-approved);
+            font-size: 0.8rem;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .field-success.show {
+            display: block;
+        }
+
+/* Limit reason column width and truncate with ellipsis */
+.personal-requests-table td:nth-child(6) {
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Status column – never shrink */
+.personal-requests-table td:nth-child(7) {
+    white-space: nowrap;
+    min-width: 100px;
+    text-align: right;
+}
+
+/* Ensure the table doesn't overflow */
+.table-container {
+    overflow-x: auto;
+}

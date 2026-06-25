@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_leave'])) {
 
 // Intercept success flag parameter hooks following post updates
 if (isset($_GET['success'])) {
-    $message = "<div class='alert success'>🚀 Leave request submitted successfully! Tracking profile: " . htmlspecialchars($employee_id) . "</div>";
+    $message = "<div class='alert success'>🚀 Leave request submitted successfully! Employee profile: " . htmlspecialchars($employee_id) . "</div>";
 }
 ?>
 <!DOCTYPE html>
@@ -217,7 +217,7 @@ if (isset($_GET['success'])) {
                 </div>
                 <div class="form-group">
                     <label>Reason / Statement</label>
-                    <textarea name="reason" class="form-control" placeholder="Provide reasons for leave..."></textarea>
+                    <textarea name="reason" class="form-control" placeholder="Provide reasons for leave..." maxlength="250"></textarea>
                 </div>
                 <button type="submit" name="submit_leave" class="btn-submit">Submit Application</button>
             </form>
@@ -288,5 +288,6 @@ document.addEventListener('DOMContentLoaded', () => {
     start.addEventListener('change', () => { if(start.value) end.min = start.value; });
 });
 </script>
+<script src="validation.js"></script>
 </body>
 </html>

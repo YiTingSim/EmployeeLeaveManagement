@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
         <section class="neon-card" style="margin-bottom: 2rem;">
             <div class="card-title"><i class="fa-solid fa-user-clock" style="color: #a855f7;"></i> Your Personal Leave Requests</div>
             <div class="table-container">
-                <table>
+                <table class="personal-requests-table">
                     <thead>
                         <tr>
                             <th>Emp ID</th>
@@ -132,8 +132,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                                 echo "<td>" . htmlspecialchars($row['start_date']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['end_date']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['days_requested']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['reason']) . "</td>";
-                                
+                                $reason = htmlspecialchars($row['reason']);
+                                $is_long = (strlen($reason) > 30);
+                                echo "<td>
+                                    <span class='reason-short' style='" . ($is_long ? "display:inline-block; max-height:1.2em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:150px;" : "") . "'>$reason</span>
+                                    <span class='reason-full' style='display:none;'>$reason</span>
+                                    " . ($is_long ? "<button class='toggle-reason' style='background:none; border:none; color:#6366f1; cursor:pointer; text-decoration:underline; font-size:0.8rem; padding:0 4px;' type='button'>View</button>" : "") . "
+                                </td>";                  
                                 /* This now displays properly since $row['status'] is selected */
                                 echo "<td style='text-align: right;'><span class='badge " . $badge_class . "'>" . htmlspecialchars($row['status']) . "</span></td>";
                                 echo "</tr>";
@@ -189,7 +194,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                                 echo "<td>" . $row['start_date'] . "</td>";
                                 echo "<td>" . $row['end_date'] . "</td>";
                                 echo "<td>" . $row['days_requested'] . "</td>";
-                                echo "<td>" . htmlspecialchars($row['reason']) . "</td>";
+                                $reason = htmlspecialchars($row['reason']);
+                                $is_long = (strlen($reason) > 30);
+                                echo "<td>
+                                    <span class='reason-short' style='" . ($is_long ? "display:inline-block; max-height:1.2em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:150px;" : "") . "'>$reason</span>
+                                    <span class='reason-full' style='display:none;'>$reason</span>
+                                    " . ($is_long ? "<button class='toggle-reason' style='background:none; border:none; color:#6366f1; cursor:pointer; text-decoration:underline; font-size:0.8rem; padding:0 4px;' type='button'>View</button>" : "") . "
+                                </td>";
                                 echo "<td style='text-align: right;'>
                                     <form method='POST' style='display:inline-flex; gap: 8px;'>
                                         <input type='hidden' name='request_id' value='".$row['id']."'>
@@ -217,6 +228,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                 "Are you sure you want to log out?"
             );
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.toggle-reason').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const td = this.closest('td');
+                    const fullSpan = td.querySelector('.reason-full');
+                    if (fullSpan) {
+                        alert(fullSpan.textContent);
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
