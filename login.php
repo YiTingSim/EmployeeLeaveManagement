@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     $password_input = trim($_POST['password']);
 
     if (!empty($emp_id) && !empty($password_input)) {
-        $stmt = $conn->prepare("SELECT emp_id, name, role, password FROM employees WHERE emp_id = ?");
+        $stmt = $conn->prepare("SELECT emp_id, name, role, password, password_reset FROM employees WHERE emp_id = ?");
         $stmt->bind_param("s", $emp_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -41,11 +41,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
                 $_SESSION['user_id'] = $user['emp_id'];
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_role'] = $user['role'];
-                
+
+                // Check if password was reset to default
+                if ($user['password_reset'] == 1) {
+                    $_SESSION['password_reset_notice'] = true;
+                    // Clear the flag so it doesn't show again
+                    $clear_stmt = $conn->prepare("UPDATE employees SET password_reset = 0 WHERE emp_id = ?");
+                    $clear_stmt->bind_param("s", $user['emp_id']);
+                    $clear_stmt->execute();
+                    $clear_stmt->close();
+                }    
+                            
                 header("Location: index.php");
                 exit();
             } else {
-                $error = "❌ Security authentication mismatch: Invalid password.";
+                if ($user['password_reset'] == 1) {
+                    $error = "❌ Your password has been reset to the default (<strong>password123</strong>). Please use that to log in.";
+                } else {
+                    $error = "❌ Security authentication mismatch: Invalid password.";
+                }
             }
         } else {
             $error = "❌ Identity unregistered: Employee ID not found.";

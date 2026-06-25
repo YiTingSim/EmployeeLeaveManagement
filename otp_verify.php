@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_otp'])) {
     $new_password = $_SESSION['reset_password'];
 
     // Update the password
-    $stmt = $conn->prepare("UPDATE employees SET password = ? WHERE emp_id = ?");
+    $stmt = $conn->prepare("UPDATE employees SET password = ?, password_reset = 0 WHERE emp_id = ?");
     $stmt->bind_param("ss", $new_password, $emp_id);
 
     if ($stmt->execute()) {
@@ -95,10 +95,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset_emp']) && isset
         exit();
     }
 
-    $check_stmt = $conn->prepare("SELECT emp_id FROM employees WHERE emp_id = ?");
+    $check_stmt = $conn->prepare("SELECT emp_id, password FROM employees WHERE emp_id = ?");
     $check_stmt->bind_param("s", $emp_id);
     $check_stmt->execute();
     $result = $check_stmt->get_result();
+
     if ($result->num_rows === 0) {
         $_SESSION['otp_error'] = "❌ Employee ID not found.";
         $check_stmt->close();
@@ -106,7 +107,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset_emp']) && isset
         header("Location: login.php#resetBox");
         exit();
     }
+
+    $user = $result->fetch_assoc();
     $check_stmt->close();
+
+    // Prevent using the same password as current
+    if ($new_password === $user['password']) {
+        $_SESSION['otp_error'] = "❌ New password cannot be the same as your current password. Please choose a different one.";
+        $conn->close();
+        header("Location: login.php#resetBox");
+        exit();
+    }
     $conn->close();
 
     // Store data in session

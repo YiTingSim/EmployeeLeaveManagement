@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                 <li><a href="requests.php"><i class="fa-solid fa-calendar-check"></i> Leave Requests</a></li>
                 <li class="active"><a href="employees.php"><i class="fa-solid fa-users"></i> Employees</a></li>
                 <li><a href="analytics.php"><i class="fa-solid fa-chart-pie"></i> Analytics</a></li>
-                <li><a href="password_requests.php"><i class="fa-solid fa-key"></i>Password Requests</a></li>
+                <li><a href="reset_password.php"><i class="fa-solid fa-rotate"></i>Reset Password</a></li>
             <?php endif; ?>
             
             <li style="margin-top: auto;"><a href="logout.php" style="color: #ef4444;" onclick="return confirmLogout()"><i class="fa-solid fa-power-off"></i> Logout</a></li>

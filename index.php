@@ -18,6 +18,12 @@ if ($conn->connect_error) { die("Database Connection Failed."); }
 $message = "";
 $employee_id = $_SESSION['user_id']; 
 
+// Check for password reset notice
+if (isset($_SESSION['password_reset_notice']) && $_SESSION['password_reset_notice'] === true) {
+    $message = "<div class='alert info' style='background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); color: #c4b5fd;'>🔐 Your password has been reset to the default: <strong>password123</strong>. Kindly change it later.</div>";
+    unset($_SESSION['password_reset_notice']);
+}
+
 // ======================================================================
 // DYNAMIC LEAVE TRACKER LOGIC: Fetch allocations and compute remaining balance
 // ======================================================================
@@ -131,7 +137,7 @@ if (isset($_GET['success'])) {
                 <li><a href="requests.php"><i class="fa-solid fa-calendar-check"></i> Leave Requests</a></li>
                 <li><a href="employees.php"><i class="fa-solid fa-users"></i> Employees</a></li>
                 <li><a href="analytics.php"><i class="fa-solid fa-chart-pie"></i> Analytics</a></li>
-                <li><a href="password_requests.php"><i class="fa-solid fa-key"></i>Password Requests</a></li>
+                <li><a href="reset_password.php"><i class="fa-solid fa-rotate"></i>Reset Password</a></li>
             <?php endif; ?>
             <li style="margin-top: auto;"><a href="#" onclick="confirmLogout()" style="color: #ef4444;"><i class="fa-solid fa-power-off"></i> Logout</a></li>
         </ul>
