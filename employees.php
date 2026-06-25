@@ -112,8 +112,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                         <input type="text" name="emp_id" class="form-control" placeholder="e.g., EMP-1094" required>
                     </div>
                     <div class="form-group">
-                        <label>Full Name (less than 18 characters)</label>
+                        <label>Full Name</label>
                         <input type="text" name="name" class="form-control" placeholder="Jane Doe" maxlength="18" data-validate="name" required>
+                        <small style="color: var(--text-muted); font-size: 0.75rem;">Full Name should less than 18 characters.</small>
                     </div>
                     <div class="form-group">
                         <label>Operational Domain / Department</label>
@@ -140,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                     </div>
                     <div class="form-group">
                         <label>Default Access Password</label>
-                        <input type="text" name="password" class="form-control" value="password123" required>
+                        <input type="text" name="password" class="form-control" value="password123" readonly required style="background-color: #2a2a3a; color: #6c757d; cursor: not-allowed; opacity: 0.8;">
                     </div>
                     <div class="form-group">
                         <label>Leave Allocation Quota (Days)</label>

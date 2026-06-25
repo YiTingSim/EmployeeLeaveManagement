@@ -376,14 +376,12 @@
     text-overflow: ellipsis;
 }
 
-/* Status column – never shrink */
 .personal-requests-table td:nth-child(7) {
     white-space: nowrap;
     min-width: 100px;
     text-align: right;
 }
 
-/* Ensure the table doesn't overflow */
 .table-container {
     overflow-x: auto;
 }

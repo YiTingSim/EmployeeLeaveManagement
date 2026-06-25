@@ -118,6 +118,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DayAway | Kiosk Gateway Terminal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="leave_management.css">
     <style>
         body { display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;}
@@ -155,7 +156,13 @@ $conn->close();
             </div>
             <div class="form-group">
                 <label>Kiosk Pin / Password</label>
-                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                <div class="password-wrapper" style="position: relative;">
+                    <input type="password" name="password" id="loginPassword" class="form-control" placeholder="••••••••" required style="padding-right: 40px;">
+                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)" 
+                        style=" position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 5px; font-size: 1rem;">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
             </div>
             <button type="submit" name="login" class="btn-submit" style="margin-top: 1.5rem;">Access Dashboard</button>
         </form>
@@ -209,6 +216,17 @@ $conn->close();
 
         box.style.display = box.style.display === 'none' ? 'block' : 'none';}
         
+        function togglePasswordVisibility(btn) {
+            const wrapper = btn.closest('.password-wrapper');
+            const input = wrapper.querySelector('input[type="password"], input[type="text"]');
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+            } else {
+                input.type = 'password';
+                btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+            }
+        }
     </script>
 </body>
 </html>
