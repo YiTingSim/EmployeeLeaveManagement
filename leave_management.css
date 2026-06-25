@@ -6,8 +6,7 @@
             --accent-glow: rgba(99, 102, 241, 0.15);
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
-            --border-color: rgba(255, 255, 255, 0.05);  //the a indicates semi transparent color
-            
+            --border-color: rgba(255, 255, 255, 0.05);  /*the a indicates semi transparent color*/
             --status-pending: #f59e0b;
             --status-approved: #10b981;
             --status-rejected: #ef4444;
