@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ---------- TEXT LENGTH VALIDATION (Max 250) ----------
-    document.querySelectorAll('textarea[name="reason"], textarea[name="report"]').forEach(input => {
+    document.querySelectorAll('textarea[name="reason"]').forEach(input => {
         // Add feedback elements if missing
         if (!input.parentElement.querySelector('.validation-error')) {
             const error = document.createElement('div');

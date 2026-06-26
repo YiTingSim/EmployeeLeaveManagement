@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     $dept = htmlspecialchars($_POST['department']);
     $leaves = intval($_POST['leaves']);
     $role = htmlspecialchars($_POST['role']);
-    $plain_password = trim($_POST['password']);
+    $pass = trim($_POST['password']);
     $manager_emp_id = !empty($_POST['manager_emp_id']) ? $_POST['manager_emp_id'] : NULL;
 
     $stmt = $conn->prepare("INSERT INTO employees (emp_id, name, department, allocated_leaves, role, password, manager_emp_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
