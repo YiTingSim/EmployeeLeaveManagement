@@ -146,20 +146,32 @@ $conn->close();
 
                 <div class="form-group">
                     <label>New Password</label>
-                    <input
-                        type="password"
-                        name="new_password"
-                        class="form-control"
-                        required>
+                    <div class="password-wrapper" style="position: relative;">
+                        <input
+                            type="password"
+                            name="new_password"
+                            class="form-control"
+                            required>
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)" 
+                            style=" position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 5px; font-size: 1rem;">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <input
-                        type="password"
-                        name="confirm_password"
-                        class="form-control"
-                        required>
+                    <div class="password-wrapper" style="position: relative;">
+                        <input
+                            type="password"
+                            name="confirm_password"
+                            class="form-control"
+                            required>
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)" 
+                            style=" position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 5px; font-size: 1rem;">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>    
                 </div>
 
                 <button type="submit" name="reset_password" class="btn-submit">Reset Password</button>
