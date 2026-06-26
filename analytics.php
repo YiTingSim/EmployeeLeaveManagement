@@ -13,6 +13,12 @@ $total_requests = $conn->query("SELECT COUNT(*) as total FROM leave_requests")->
 $approved_count = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHERE status='Approved'")->fetch_assoc()['total'];
 $pending_count  = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHERE status='Pending'")->fetch_assoc()['total'];
 $rejected_count = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHERE status='Rejected'")->fetch_assoc()['total'];
+
+$annual    = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHERE leave_type='Annual Leave'")->fetch_assoc()['total'];
+$medical   = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHERE leave_type='Medical Leave'")->fetch_assoc()['total'];
+$maternity = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHERE leave_type='Maternity Leave'")->fetch_assoc()['total'];
+$casual	   = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHERE leave_type='Casual Leave'")->fetch_assoc()['total'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,6 +99,7 @@ $rejected_count = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHE
                     </canvas>
                 </div>
             </section>
+			<br><br>
 
 			<section class="neon-card">
 				<div class="card-title"><i class="fa-solid fa-chart-bar" style="color: var(--accent-primary);"></i> Category Load Breakdown</div>
@@ -114,6 +121,20 @@ $rejected_count = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHE
 					</table>
 				</div>
 			</section>
+			<br>
+			
+			<section class="neon-card">
+				<div class="card-title"><i class="fa-solid fa-chart-bar" style="color: var(--accent-primary);"></i>Type of Leave</div>
+				<div class="chart-viewport">
+					<canvas id="leaveTypeChart"
+							data-annual="<?php echo(int)$annual; ?>"
+							data-medical="<?php echo(int)$medical; ?>"
+							data-maternity="<?php echo(int)$maternity; ?>"
+							data-casual="<?php echo(int)$casual; ?>">
+					</canvas>
+				</div>
+			</section>	
+			
 		</div>
     </main>
     <script>
@@ -125,6 +146,7 @@ $rejected_count = $conn->query("SELECT COUNT(*) as total FROM leave_requests WHE
     </script>
 	
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="chart.js"></script>
 	<script src="analytics.js"></script>
 	
 </body>

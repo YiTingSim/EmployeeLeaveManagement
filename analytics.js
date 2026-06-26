@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: false,		//Make it flexible and resizable
             plugins: {
                 legend: {
                     position: 'bottom',
@@ -49,4 +49,43 @@ document.addEventListener("DOMContentLoaded", function () {
             cutout: '75%'
         }
     });
+
+    // 2. Initialize Type Chart (Bar Chart)
+    const typeCanvas = document.getElementById('leaveTypeChart');
+    if (typeCanvas) {
+        const annual    = parseInt(typeCanvas.getAttribute('data-annual')) || 0;
+        const medical   = parseInt(typeCanvas.getAttribute('data-medical')) || 0;
+        const maternity = parseInt(typeCanvas.getAttribute('data-maternity')) || 0;
+        const casual    = parseInt(typeCanvas.getAttribute('data-casual')) || 0;
+
+        const ctx2 = typeCanvas.getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Annual', 'Medical', 'Maternity', 'Casual'],
+                datasets: [{
+                    label: 'Requests',
+                    data: [annual, medical, maternity, casual],
+                    backgroundColor: [
+                        '#0f43ff', // Annual
+                        '#06b6d4', // Medical
+                        '#f43f5e', // Maternity
+                        '#d630ff'  // Casual
+                    ],
+                    borderRadius: 4,
+                    barPercentage: 0.5,       // Makes bars slim
+                    categoryPercentage: 0.5   // Makes bars slim
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { 
+                    y: { beginAtZero: true, grid: { color: '#374151' }, ticks: { color: '#9ca3af' } },
+                    x: { grid: { display: false }, ticks: { color: '#9ca3af' } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+    }
 });
