@@ -145,7 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                     </div>
                     <div class="form-group">
                         <label>Leave Allocation Quota (Days)</label>
-                        <input type="number" name="leaves" class="form-control" value="22" required>
+                        <input type="number" name="leaves" class="form-control" value="22" min="0" required>
                     </div>
                     <button type="submit" name="add_employee" class="btn-submit">Register Profile</button>
                 </form>

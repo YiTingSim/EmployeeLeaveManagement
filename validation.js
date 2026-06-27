@@ -1,6 +1,4 @@
-// ============================================================
-// 1. NAME VALIDATION: Max 18 chars, only letters and spaces
-// ============================================================
+// NAME VALIDATION: Max 18 chars, only letters and spaces
 function validateName(input) {
     const errorEl = input.parentElement.querySelector('.validation-error');
     const successEl = input.parentElement.querySelector('.field-success');
@@ -43,9 +41,29 @@ function validateName(input) {
     return true;
 }
 
-// ============================================================
-// 3. TEXT LENGTH VALIDATION: Max 250 characters
-// ============================================================
+// LEAVES VALIDATION (Must be >= 0)
+document.querySelectorAll('input[name="leaves"]').forEach(input => {
+    // Add feedback elements if missing
+    if (!input.parentElement.querySelector('.validation-error')) {
+        const error = document.createElement('div');
+        error.className = 'validation-error';
+        input.parentElement.appendChild(error);
+    }
+    if (!input.parentElement.querySelector('.field-success')) {
+        const success = document.createElement('div');
+        success.className = 'field-success';
+        input.parentElement.appendChild(success);
+    }
+
+    input.addEventListener('input', function() {
+        validateLeaves(this);
+    });
+    input.addEventListener('blur', function() {
+        validateLeaves(this);
+    });
+});
+
+// TEXT LENGTH VALIDATION: Max 250 characters
 function validateTextLength(input, maxLength = 250) {
     const errorEl = input.parentElement.querySelector('.validation-error');
     const successEl = input.parentElement.querySelector('.field-success');
@@ -69,12 +87,10 @@ function validateTextLength(input, maxLength = 250) {
     return true;
 }
 
-// ============================================================
-// 6. AUTO-ATTACH VALIDATIONS (Run on DOM ready)
-// ============================================================
+// AUTO-ATTACH VALIDATIONS
 document.addEventListener('DOMContentLoaded', function() {
     
-    // ---------- NAME VALIDATION ----------
+    // NAME VALIDATION
     document.querySelectorAll('input[name="name"]').forEach(input => {
         // Add feedback elements if missing
         if (!input.parentElement.querySelector('.validation-error')) {
@@ -96,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // ---------- TEXT LENGTH VALIDATION (Max 250) ----------
+    // TEXT LENGTH VALIDATION (Max 250)
     document.querySelectorAll('textarea[name="reason"]').forEach(input => {
         // Add feedback elements if missing
         if (!input.parentElement.querySelector('.validation-error')) {
@@ -119,14 +135,46 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Block form submission if name invalid
-const employeeForm = document.querySelector('form[action="employees.php"]');
-if (employeeForm) {
-    employeeForm.addEventListener('submit', function(e) {
-        const nameInput = this.querySelector('input[name="name"]');
-        if (nameInput && !validateName(nameInput)) {
-            e.preventDefault();
-            nameInput.focus();
+    const employeeForm = document.querySelector('form[action="employees.php"]');
+    if (employeeForm) {
+        employeeForm.addEventListener('submit', function(e) {
+            const nameInput = this.querySelector('input[name="name"]');
+            if (nameInput && !validateName(nameInput)) {
+                e.preventDefault();
+                nameInput.focus();
+                return;
+            }
+            const leavesInput = this.querySelector('input[name="leaves"]');
+            if (leavesInput && !validateLeaves(leavesInput)) {
+                e.preventDefault();
+                leavesInput.focus();
+                return;
+            }
+        });
+    }    
+
+    // LEAVES VALIDATION: Must be >= 0
+    function validateLeaves(input) {
+        const errorEl = input.parentElement.querySelector('.validation-error');
+        const successEl = input.parentElement.querySelector('.field-success');
+        const value = parseInt(input.value, 10);
+
+        // Clear previous states
+        if (errorEl) errorEl.classList.remove('show');
+        if (successEl) successEl.classList.remove('show');
+
+        if (isNaN(value) || value < 0) {
+            if (errorEl) {
+                errorEl.textContent = 'Leave allocation cannot be negative. Please enter 0 or more.';
+                errorEl.classList.add('show');
+            }
+            return false;
         }
-    });
-}
+
+        if (successEl) {
+            successEl.textContent = '✓ Valid quota.';
+            successEl.classList.add('show');
+        }
+        return true;
+    }
 });
