@@ -11,7 +11,7 @@ if ($conn->connect_error) { die("Database link failure."); }
 
 $message = "";
 $manager_list = [];
-$managers_sql = "SELECT emp_id, name FROM employees WHERE role = 'Manager' ORDER BY name";
+$managers_sql = "SELECT emp_id, name FROM employees WHERE role = 'Manager' ORDER BY emp_id";
 $managers_result = $conn->query($managers_sql);
 if ($managers_result && $managers_result->num_rows > 0) {
     while ($m = $managers_result->fetch_assoc()) {
