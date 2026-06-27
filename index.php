@@ -52,7 +52,7 @@ $remaining_balance = $total_allocated - $total_used;
 $admin_absences = [];
 $user_role = $_SESSION['user_role'] ?? 'Staff'; 
 
-if ($user_role !== 'Admin') {
+if ($user_role === 'Manager') {
     $stmt_admin_notif = $conn->prepare("
         SELECT lr.leave_type, lr.start_date, lr.end_date, e.name 
         FROM leave_requests lr
@@ -168,7 +168,7 @@ if (isset($_GET['success'])) {
 
     <?php echo $message; ?>
     
-    <?php if (($user_role !== 'Admin') && !empty($admin_absences)): ?>
+    <?php if (($user_role === 'Manager') && !empty($admin_absences)): ?>
         <div style="margin-bottom: 24px;">
             <?php foreach ($admin_absences as $absence): ?>
                 <div class="alert info" style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); display: flex; align-items: center; gap: 12px; margin-bottom: 10px; padding: 1rem; border-radius: 8px;">
