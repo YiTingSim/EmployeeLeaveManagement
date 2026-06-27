@@ -130,7 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                     <div class="form-group">
                         <label>Immediate Supervisor (Manager)</label>
                         <select name="manager_emp_id" class="form-control">
-                            <option value="">-- None / Unassigned --</option>
+                            <option value="">None</option>
                             <?php foreach ($manager_list as $manager): ?>
                                 <option value="<?php echo htmlspecialchars($manager['emp_id']); ?>">
                                     <?php echo htmlspecialchars($manager['emp_id'] . ' - ' . $manager['name']); ?>
