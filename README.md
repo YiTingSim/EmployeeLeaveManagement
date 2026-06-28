@@ -39,6 +39,7 @@ For managers and administrators, the system provides additional administrative f
 ├── reset_password.php	 #Reset password to password123
 ├── validation.js		 #includes validation for error input and provides error handling
 ├── leave_management.css #Unified Global CSS styling 
+├── leave_management.sql #Database
 └── README.md			 #Project deployment and documentation guidance
 
 
