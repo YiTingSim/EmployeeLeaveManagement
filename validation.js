@@ -1,4 +1,4 @@
-// NAME VALIDATION: Max 18 chars, only letters and spaces
+// Name Validation: Max 18 chars, only letters and spaces
 function validateName(input) {
     const errorEl = input.parentElement.querySelector('.validation-error');
     const successEl = input.parentElement.querySelector('.field-success');
@@ -41,7 +41,7 @@ function validateName(input) {
     return true;
 }
 
-// LEAVES VALIDATION (Must be >= 0)
+// Leaves Validation (Must be >= 0)
 document.querySelectorAll('input[name="leaves"]').forEach(input => {
     // Add feedback elements if missing
     if (!input.parentElement.querySelector('.validation-error')) {
@@ -63,7 +63,7 @@ document.querySelectorAll('input[name="leaves"]').forEach(input => {
     });
 });
 
-// TEXT LENGTH VALIDATION: Max 250 characters
+// Text Length Validation: Max 250 characters
 function validateTextLength(input, maxLength = 250) {
     const errorEl = input.parentElement.querySelector('.validation-error');
     const successEl = input.parentElement.querySelector('.field-success');
@@ -87,10 +87,10 @@ function validateTextLength(input, maxLength = 250) {
     return true;
 }
 
-// AUTO-ATTACH VALIDATIONS
+// Auto-attach Validations
 document.addEventListener('DOMContentLoaded', function() {
     
-    // NAME VALIDATION
+    // Name Validation
     document.querySelectorAll('input[name="name"]').forEach(input => {
         // Add feedback elements if missing
         if (!input.parentElement.querySelector('.validation-error')) {
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // TEXT LENGTH VALIDATION (Max 250)
+    // Text Length Validation (Max 250)
     document.querySelectorAll('textarea[name="reason"]').forEach(input => {
         // Add feedback elements if missing
         if (!input.parentElement.querySelector('.validation-error')) {
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }    
 
-    // LEAVES VALIDATION: Must be >= 0
+    // Leaves Validation: Must be >= 0
     function validateLeaves(input) {
         const errorEl = input.parentElement.querySelector('.validation-error');
         const successEl = input.parentElement.querySelector('.field-success');

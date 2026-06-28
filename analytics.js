@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const pending  = parseInt(chartCanvas.getAttribute('data-pending')) || 0;
     const rejected = parseInt(chartCanvas.getAttribute('data-rejected')) || 0;
 
-    // 3. Initialize Chart configuration
+    // Initialize Chart configuration
     const ctx = chartCanvas.getContext('2d');
     new Chart(ctx, {
         type: 'doughnut',
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // 2. Initialize Type Chart (Bar Chart)
+    // Initialize Type Chart (Bar Chart)
     const typeCanvas = document.getElementById('leaveTypeChart');
     if (typeCanvas) {
         const annual    = parseInt(typeCanvas.getAttribute('data-annual')) || 0;

@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
         if ($result && $result->num_rows === 1) {
             $user = $result->fetch_assoc();
             
-            // Standard string comparison for local debugging. 
+            // Standard string comparison for local debugging 
             if ($password_input === $user['password']) {
                 $_SESSION['user_id'] = $user['emp_id'];
                 $_SESSION['user_name'] = $user['name'];

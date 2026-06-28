@@ -24,10 +24,8 @@ if (isset($_SESSION['password_reset_notice']) && $_SESSION['password_reset_notic
     unset($_SESSION['password_reset_notice']);
 }
 
-// ======================================================================
-// DYNAMIC LEAVE TRACKER LOGIC: Fetch allocations and compute remaining balance
-// ======================================================================
-// 1. Fetch the total original baseline maximum allocation from employee registry
+// Dynamic Leave Tracker Logic: Fetch allocations and compute remaining balance
+// Fetch the total original baseline maximum allocation from employee registry
 $alloc_stmt = $conn->prepare("SELECT allocated_leaves FROM employees WHERE emp_id = ?");
 $alloc_stmt->bind_param("s", $employee_id);
 $alloc_stmt->execute();
@@ -35,7 +33,7 @@ $alloc_res = $alloc_stmt->get_result()->fetch_assoc();
 $total_allocated = $alloc_res['allocated_leaves'] ?? 22; // Default fallback matches schema rules
 $alloc_stmt->close();
 
-// 2. Sum up total number of days already registered in active status states
+// Sum up total number of days already registered in active status states
 $used_stmt = $conn->prepare("SELECT SUM(DATEDIFF(end_date, start_date) + 1) as used FROM leave_requests WHERE employee_id = ? AND status IN ('Approved', 'Pending')");
 $used_stmt->bind_param("s", $employee_id);
 $used_stmt->execute();
@@ -43,12 +41,10 @@ $used_res = $used_stmt->get_result()->fetch_assoc();
 $total_used = $used_res['used'] ?? 0;
 $used_stmt->close();
 
-// 3. Compute structural remaining available allowance string
+// Compute structural remaining available allowance string
 $remaining_balance = $total_allocated - $total_used;
 
-// ======================================================================
-//  BROADCAST NOTIFICATION SYSTEM: Fetch Admin Absences  
-// ======================================================================
+// Broadcast Notification System: Fetch Admin Absences  
 $admin_absences = [];
 $user_role = $_SESSION['user_role'] ?? 'Staff'; 
 
@@ -72,10 +68,7 @@ if ($user_role === 'Manager') {
     }
 }
 
-
-// ======================================================================
-// PROCESSING LAYER: Form Submissions
-// ======================================================================
+// Processing Layer: Form Submissions
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_leave'])) {
     $leave_type = htmlspecialchars($_POST['leave_type']);
     $start_date = htmlspecialchars($_POST['start_date']);

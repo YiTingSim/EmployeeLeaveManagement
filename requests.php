@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// 1. UPDATED SECURITY GATE: Allow BOTH Managers and Employees to enter
+// Updated Security Gate: Allow Both Managers and Employees to enter
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role'])) {
     header("Location: login.php");
     exit();
@@ -174,7 +174,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                     <tbody>
                         <?php
                         if ($user_role === 'Admin') {
-                            // Admin: Show ONLY pending requests from MANAGERS
+                            // Admin: Show Only pending requests from Managers
                             $stmt_others = $conn->prepare("SELECT lr.id, lr.employee_id, lr.leave_type, lr.start_date, lr.end_date, lr.days_requested, lr.reason FROM leave_requests lr, employees e WHERE lr.employee_id = e.emp_id AND lr.status = 'Pending' AND e.role = 'Manager' AND lr.employee_id != ? ORDER BY lr.id ASC");
                             $stmt_others->bind_param("s", $current_user_id);
                         }

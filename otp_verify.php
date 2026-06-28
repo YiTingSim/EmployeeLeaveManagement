@@ -1,9 +1,7 @@
 <?php
 session_start();
 
-// ============================================================
-// 1. OTP VERIFICATION (POST request with verify_otp)
-// ============================================================
+// OTP Verification (POST request with verify_otp)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_otp'])) {
     $otp = trim($_POST['otp_code']);
 
@@ -60,9 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_otp'])) {
     $conn->close();
 }
 
-// ============================================================
-// 2. INITIAL RESET REQUEST (POST request with reset_emp, etc.)
-// ============================================================
+// Initial Reset Request (POST request with reset_emp, etc.)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset_emp']) && isset($_POST['new_password']) && isset($_POST['confirm_password'])) {
     $emp_id = trim($_POST['reset_emp']);
     $new_password = trim($_POST['new_password']);
@@ -129,9 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset_emp']) && isset
     exit();
 }
 
-// ============================================================
-// 3. GET REQUEST – Display the OTP form (if session data exists)
-// ============================================================
+// GET Request – Display the OTP form (if session data exists)
 if (!isset($_SESSION['reset_emp']) || !isset($_SESSION['reset_password'])) {
     // No session data, redirect to login
     header("Location: login.php");
